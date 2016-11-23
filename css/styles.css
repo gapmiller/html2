@@ -1,0 +1,320 @@
+/* styles */
+
+body {
+    /**padding gets rid of white space above navigation **/
+    padding-top: 0px;
+}
+
+nav {
+	position: top;
+	top: 0;
+	left: 0;
+	background: #ffffff;
+	border-bottom: 2px solid #ccc;
+	height: 70px;
+	width: 100%;
+}
+
+nav ul {
+    float: center;
+    width: auto;
+}   
+
+nav li {
+	float: left;
+	width: auto;
+}
+
+nav li a {
+    padding: 25px 10px;
+    display: block;
+    color: #666666;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1em;
+
+}
+
+nav li p {
+    padding: 25px 10px;
+    display: block;
+    color: #666666;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1em;
+
+}
+
+.authlist {
+    float: right;
+     padding: 0px 0px 0px;    
+}
+
+/** class .logout can be deleted if the logout button in header.php will line up correctly using the navbutton class ? **/
+.logout {
+     background: none!important;
+     border: none; 
+     padding: 22px 0px 0px;
+     font: inherit;
+     font-weight: normal;
+     /*border is optional*/
+     border-bottom: 1px solid #666666; 
+     cursor: pointer;
+     float: right;
+}
+
+.navbutton {
+     background: none!important;
+     border: none; 
+     padding: 0px 0px 0px;
+     font: inherit;
+     font-weight: normal;
+     /*border is optional*/
+     border-bottom: 1px solid #666666; 
+     cursor: pointer;
+     float: right;
+}
+
+.navbar {
+    margin-bottom: 0px;
+}
+
+#brand {
+    color: transparent;
+    background: url(../images/logo.jpg) no-repeat top left;
+    background-size: contain;
+    height: 60px;
+    width: 400px;
+    float: left;
+    margin: 5px;
+} 
+
+
+#hero {
+    background: url(../images/banner1.jpg) no-repeat;
+    text-align: left;
+    background-size: cover;
+    height: 450px;
+    padding: 0px 0;
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+    color: white;
+    text-shadow: 0 2px 1px rgba(0,0,0,0.3);
+}
+
+.auth-form {
+    float: center;
+}
+
+.auth-form {
+    /* Size and position */
+    width: 375px;
+    margin: 0px left 30px;
+    padding: 00px;
+    float: left;
+
+    /* Font styles */
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+    color: white;
+    text-shadow: 0 2px 1px rgba(0,0,0,0.3);
+}
+
+.reg-form {
+    /* Size and position */
+    width: 375px;
+    margin: 60px left 30px;
+    padding: 10px;
+    float: left;
+
+    /* Font styles */
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+    color: white;
+    text-shadow: 0 2px 1px rgba(0,0,0,0.3);
+}
+
+.reg-form h1,
+.auth-form h1 {
+    font-size: 36px;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+.reg-form h2,
+.auth-form h2 {
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 20px;
+    color: white;
+    text-shadow: 0 2px 1px rgba(0,0,0,5);
+}
+
+.reg-form input[type=text],
+.reg-form input[type=password],
+.reg-form input[type=email],
+.auth-form input[type=text],
+.auth-form input[type=password] {
+    /* Size and position */
+    width: 100%;
+    padding: 8px 4px 8px 10px;
+    margin-bottom: 15px;
+
+    /* Styles */
+    border: 1px solid #4e3043; /* Fallback */
+    border: 1px solid rgba(78,48,67, 0.8);
+    background: rgba(0,0,0,0.75);
+    border-radius: 2px;
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2), 
+        inset 0 1px 1px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-out;
+
+    /* Font styles */
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+    color: #fff;
+    font-size: 13px;
+}
+
+/* Placeholder style (from http://stackoverflow.com/questions/2610497/change-an-inputs-html5-placeholder-color-with-css) */
+
+.auth-form input::-webkit-input-placeholder {
+    color: rgba(37,21,26,0.5);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.auth-form input:-moz-placeholder {
+    color: rgba(37,21,26,0.5);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.auth-form input:-ms-input-placeholder {
+    color: rgba(37,21,26,0.5);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.auth-form input[type=text]:hover,
+.auth-form input[type=password]:hover {
+    border-color: #333;
+}
+
+.auth-form input[type=text]:focus,
+.auth-form input[type=password]:focus,
+.auth-form input[type=submit]:focus {
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2), 
+        inset 0 1px 1px rgba(0,0,0,0.1),
+        0 0 0 3px rgba(255,255,255,0.15);
+    outline: none;
+}
+
+/* Fallback */
+.no-boxshadow .auth-form .reg-form input[type=text]:focus,
+.no-boxshadow .auth-form .reg-form input[type=password]:focus {
+    outline: 1px solid white;
+}
+
+.auth-form input[type=submit],
+.reg-form input[type=submit] {
+    /* Size and position */
+    width: 104.2%;
+    padding: 8px 65px;
+    
+    /* Styles */
+    background: #634056;
+    background: linear-gradient(rgba(99,64,86,0.5), rgba(76,49,65,0.7));    
+    border-radius: 5px;
+    border: 1px solid #4e3043;
+    box-shadow: inset 0 1px rgba(255,255,255,0.4), 0 2px 1px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+
+    /* Font styles */
+    color: white;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+}
+
+.auth-form input[type=submit]:hover {
+    box-shadow: 
+        inset 0 1px rgba(255,255,255,0.2), 
+        inset 0 20px 30px rgba(99,64,86,0.5);
+}
+
+.reg-form input[type=submit]:hover {
+    box-shadow: 
+        inset 0 1px rgba(255,255,255,0.2), 
+        inset 0 20px 30px rgba(99,64,86,0.5);
+}
+
+/* Fallback */
+.no-boxshadow .auth-form .reg-form input[type=submit]:hover {
+    background: #594642;
+}
+
+.auth-form .reg-form label {
+    display: none;
+    padding: 0 0 5px 2px;
+    cursor: pointer;
+}
+
+.auth-form .reg-form label:hover ~ input {
+    border-color: #333;
+}
+
+.no-placeholder .auth-form .reg-form label {
+    display: block;
+}
+
+.clear{clear: both;}
+
+footer,
+.bodycontainer,
+.container{
+    width: 1600px;
+    margin: 0 auto;
+}
+
+.bodycontainer a {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.4em;
+}
+
+.container a {
+    
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.2em;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+section {
+    padding: 20px 0px;
+}
+
+#oldnames th,
+#jobs th {
+    font-weight: bold;
+    text-align: left;
+}
+
+#general,
+#oldnames,
+#jobs {
+    margin: 20px 0px;
+}
+
+#oldnames td,
+#oldnames th,
+#jobs td,
+#jobs th {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: 16px;
+}
