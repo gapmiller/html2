@@ -38,7 +38,7 @@ session_start();
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Climatec Job Sites and Numbers</a>
+            <a class="navbar-brand" href="/">Job Numbers and Sites</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -69,7 +69,6 @@ session_start();
                       echo '<li><form action="auth_register.php" method="POST">
                           <p><button type="submit" class="navbutton" name="submit" value="Logout">
                           <span>Logout</span></button></p></form></li>';
-
                   }else{
                       echo '<li><form action="auth_register_form.php" method="GET">
                           <p><button type="submit" class="navbutton" name="authreg" value="login">
@@ -83,5 +82,4 @@ session_start();
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
-        </nav>
-
+</nav>

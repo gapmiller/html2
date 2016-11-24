@@ -75,7 +75,11 @@
             <section>
                 <form action="auth_register_form.php" method="GET">
                           <p><button type="submit"  name="authreg" value="register">
-                          <span>Register</span></button></p></form>
+                          <span>Go to Registration Form</span></button></p></form>
+
+                <form action="auth_register_form.php" method="GET">
+                          <p><button type="submit"  name="authreg" value="login">
+                          <span>Go to Login Form</span></button></p></form>
             </section>
         </div>
 

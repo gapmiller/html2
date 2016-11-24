@@ -6,13 +6,13 @@ body {
 }
 
 nav {
-	position: top;
-	top: 0;
-	left: 0;
-	background: #ffffff;
-	border-bottom: 2px solid #ccc;
-	height: 70px;
-	width: 100%;
+    position: top;
+    top: 0;
+    left: 0;
+    background: #ffffff;
+    border-bottom: 2px solid #ccc;
+    height: 70px;
+    width: 100%;
 }
 
 nav ul {
@@ -21,8 +21,8 @@ nav ul {
 }   
 
 nav li {
-	float: left;
-	width: auto;
+    float: left;
+    width: auto;
 }
 
 nav li a {
@@ -50,19 +50,6 @@ nav li p {
      padding: 0px 0px 0px;    
 }
 
-/** class .logout can be deleted if the logout button in header.php will line up correctly using the navbutton class ? **/
-.logout {
-     background: none!important;
-     border: none; 
-     padding: 22px 0px 0px;
-     font: inherit;
-     font-weight: normal;
-     /*border is optional*/
-     border-bottom: 1px solid #666666; 
-     cursor: pointer;
-     float: right;
-}
-
 .navbutton {
      background: none!important;
      border: none; 
@@ -76,7 +63,16 @@ nav li p {
 }
 
 .navbar {
+    color: transparent;
     margin-bottom: 0px;
+}
+
+.navbar-header{
+
+}
+
+.navbar-brand{
+    
 }
 
 #brand {
@@ -101,10 +97,8 @@ nav li p {
     text-shadow: 0 2px 1px rgba(0,0,0,0.3);
 }
 
-.auth-form {
-    float: center;
-}
 
+.reg-form,
 .auth-form {
     /* Size and position */
     width: 375px;
@@ -118,24 +112,11 @@ nav li p {
     text-shadow: 0 2px 1px rgba(0,0,0,0.3);
 }
 
-.reg-form {
-    /* Size and position */
-    width: 375px;
-    margin: 60px left 30px;
-    padding: 10px;
-    float: left;
-
-    /* Font styles */
-    font-family: 'Raleway', 'Lato', Arial, sans-serif;
-    color: white;
-    text-shadow: 0 2px 1px rgba(0,0,0,0.3);
-}
-
 .reg-form h1,
 .auth-form h1 {
     font-size: 36px;
     font-weight: bold;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .reg-form h2,
@@ -155,7 +136,7 @@ nav li p {
     /* Size and position */
     width: 100%;
     padding: 8px 4px 8px 10px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
 
     /* Styles */
     border: 1px solid #4e3043; /* Fallback */
@@ -278,10 +259,6 @@ footer,
     font-size: 18px;
     font-weight: bold;
     line-height: 1.4em;
-}
-
-.container a {
-    
 }
 
 p {
