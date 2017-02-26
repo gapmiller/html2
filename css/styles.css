@@ -67,14 +67,6 @@ nav li p {
     margin-bottom: 0px;
 }
 
-.navbar-header{
-
-}
-
-.navbar-brand{
-    
-}
-
 #brand {
     color: transparent;
     text-shadow: none;
@@ -86,8 +78,6 @@ nav li p {
     margin: 5px;
 } 
 
-
-
 #hero {
     background: url(../images/banner1.jpg) no-repeat;
     text-align: left;
@@ -98,7 +88,6 @@ nav li p {
     color: white;
     text-shadow: 0 2px 1px rgba(0,0,0,0.3);
 }
-
 
 .reg-form,
 .auth-form {
