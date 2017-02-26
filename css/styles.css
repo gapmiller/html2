@@ -77,13 +77,15 @@ nav li p {
 
 #brand {
     color: transparent;
+    text-shadow: none;
     background: url(../images/logo.jpg) no-repeat top left;
     background-size: contain;
-    height: 60px;
-    width: 400px;
+    height: 50px;
+    width: 300px;
     float: left;
     margin: 5px;
 } 
+
 
 
 #hero {
