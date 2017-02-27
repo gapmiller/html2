@@ -7,7 +7,7 @@
             <div class='container'>
                 <?php
 
-                        $authreg=$_GET['authreg'];
+                $authreg=$_GET['authreg'];
                 if ($authreg === 'register'){
                     echo '<form class="reg-form" action="auth_register.php" method="POST">
                         <h1>Register</h1>

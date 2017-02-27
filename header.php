@@ -55,9 +55,9 @@ session_start();
             </ul>
 
             <!-- search box -->
-            <form class="navbar-form navbar-left">
+            <form class="navbar-form navbar-left" action="search.php" method="POST">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
+                <input type="text" name="searchstring" class="form-control"  placeholder="Search - does not work yet.">
               </div>
               <button type="submit" class="btn btn-default">Submit</button>
             </form>
