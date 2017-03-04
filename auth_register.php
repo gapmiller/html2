@@ -27,27 +27,33 @@
 	$email = $_POST['email'];
     $action = $_POST['submit'];
 
+    // SQL to create the prepared statements
+    $userQryResult = pg_prepare($db, "pst_user", "SELECT * FROM tblUsers WHERE fldusername = $1");    
+    $emailQryResult = pg_prepare($db, "pst_email", "SELECT * FROM tblUsers WHERE fldemail = $1");
+    $newuserQryUpdate = pg_prepare($db, "pst_new", "INSERT INTO tblUsers (fldusername, fldpassword, fldemail) VALUES($1, $2, $3)");
+
     /**********************************
     *   Login
     **********************************/
     if ($action == "Login") {
         // get stored password hash
-        $query = pg_exec($db,"SELECT * FROM tblUsers WHERE fldusername = '$username'") or die(pg_last_error());
-        $data = pg_fetch_array($query);
+        // Execute the prepared statement to check user login
+        $userQryResult = pg_execute($db, "pst_user", array($username));
+        $data = pg_fetch_all($userQryResult);
         // check username and password
-        if (password_verify ($password, $data['fldpassword'])) {
+        if (password_verify ($password, $data[0]['fldpassword'])) {
             // set session variables and return to home page with message
             $_SESSION['loggedin'] = 1;
             $_SESSION['logintime'] = idate("U");
-            $_SESSION['active'] = $data['fldactive'];
+            $_SESSION['active'] = $data[0]['fldactive'];
             //$tPhptime = date('Y-m-d H:i:s');
-            $qry = "UPDATE tblUsers SET fldlastlogin = now() WHERE fldusername = '$username'";
+            $qry = "UPDATE tblUsers SET fldlastlogin = now() WHERE fldusername = '" . $data[0]['fldusername'] ."'";
             $pgqry = pg_query($db, $qry);
             if ($data['fldactive'] == "f"){
-                $_SESSION['message1'] = "Account: "  . $data['fldusername'] . " - Your account is not active. 
+                $_SESSION['message1'] = "Account: "  . $data[0]['fldusername'] . " - Your account is not active. 
                     Contact the database administrator to confirm your registration.";
             }else{
-                $_SESSION['message1'] = $data['fldusername'] . " is logged in.";
+                $_SESSION['message1'] = $data[0]['fldusername'] . " is logged in.";
             }
             header("Location: index.php");
 
@@ -68,22 +74,28 @@
 			header("Location: auth_register_form.php");
         }else{
         	//Has the username or email been used?
-            $checkuser = pg_exec($db, "SELECT fldusername FROM tblUsers WHERE fldusername='$username'");
-            $username_exist = pg_num_rows($checkuser);
-            $checkemail = pg_exec("SELECT fldEmail FROM tblUsers WHERE fldEmail='$email'");
-            $email_exist = pg_num_rows($checkemail);
-            if ($email_exist||$username_exist) {
+            $userQryResult = pg_execute($db, "pst_user", array($username));
+            $checkuser = pg_fetch_all($userQryResult);
+            $username_exist = sizeof($checkuser);
+
+            $emailQryResult = pg_execute($db, "pst_email", array($email));
+            $checkemail = pg_fetch_all($emailQryResult);
+            $email_exist = sizeof($checkemail);
+
+            //if either exist, error; otherwise add
+            if ($checkuser||$checkemail) {
                 $_SESSION['message2'] = "Username or email exists.";
                 header("Location: auth_register_form.php?authreg=register");
             }else{
                 //Everything seems good, lets insert.
                 $hpassword = password_hash($password, PASSWORD_DEFAULT);
-                $query = "INSERT INTO tblUsers (fldusername, fldpassword, fldEmail) VALUES('$username','$hpassword','$email')";
-                pg_exec($query) or die(pg_last_error());
+                //$query = "INSERT INTO tblUsers (fldusername, fldpassword, fldemail) VALUES('$username','$hpassword','$email')";
+                //pg_exec($query) or die(pg_last_error());
                 header("Location: auth_register_form.php");
                 $_SESSION['message2'] = "Contact the database administrator to confirm your registration.";
             }
         } 
+
 
     /**********************************
     *   Logout
