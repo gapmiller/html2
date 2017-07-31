@@ -65,18 +65,28 @@ session_start();
             <!-- login/register or logout -->
             <ul class="nav navbar-nav navbar-right">
               <?php
-                  if ($_SESSION['loggedin'] === 1){
-                      echo '<li><form action="auth_register.php" method="POST">
-                          <p><button type="submit" class="navbutton" name="submit" value="Logout">
-                          <span>Logout</span></button></p></form></li>';
+                  if (isset($_SESSION['loggedin'])) {
+                    if ($_SESSION['loggedin'] === 1){
+                        echo '<li><form action="auth_register.php" method="POST">
+                            <p><button type="submit" class="navbutton" name="submit" value="Logout">
+                            <span>Logout</span></button></p></form></li>';
+                    }else{
+                        echo '<li><form action="auth_register_form.php" method="GET">
+                            <p><button type="submit" class="navbutton" name="authreg" value="login">
+                            <span>Login</span></button></p></form></li>';
+                        echo '<li><p>or<p></li>';
+                        echo '<li><form action="auth_register_form.php" method="GET">
+                            <p><button type="submit" class="navbutton" name="authreg" value="register">
+                            <span>Register</span></button></p></form></li>';
+                    }
                   }else{
-                      echo '<li><form action="auth_register_form.php" method="GET">
-                          <p><button type="submit" class="navbutton" name="authreg" value="login">
-                          <span>Login</span></button></p></form></li>';
-                      echo '<li><p>or<p></li>';
-                      echo '<li><form action="auth_register_form.php" method="GET">
-                          <p><button type="submit" class="navbutton" name="authreg" value="register">
-                          <span>Register</span></button></p></form></li>';
+                        echo '<li><form action="auth_register_form.php" method="GET">
+                            <p><button type="submit" class="navbutton" name="authreg" value="login">
+                            <span>Login</span></button></p></form></li>';
+                        echo '<li><p>or<p></li>';
+                        echo '<li><form action="auth_register_form.php" method="GET">
+                            <p><button type="submit" class="navbutton" name="authreg" value="register">
+                            <span>Register</span></button></p></form></li>';
                   }
                 ?>
               </ul>

@@ -6,13 +6,18 @@
         <section>
             <?php
                 echo '<p class="title">';
-                if ($_SESSION['message1'] != NULL){
-                    echo $_SESSION['message1'];
-                  }else if ($_SESSION['loggedin'] != 1) {
+                if (isset($_SESSION['message1'])){
+                    if ($_SESSION['message1'] != ""){
+                        echo $_SESSION['message1'];
+                    }
+                }
+                if (isset($_SESSION['loggedin'])){
+                    if($_SESSION['loggedin'] != 1) {
+                        echo '<a href="auth_register_form.php">Must login to see data.</a>';
+                    }
+                }else if (!isset($_SESSION['loggedin'])){
                     echo '<a href="auth_register_form.php">Must login to see data.</a>';
-                  }else{
-                    echo "Something went wrong. Try logging in again.";
-                  }
+                }
                 echo '</p>';
                 $_SESSION['message2'] = "";
                 $_SESSION['message3'] = "";
@@ -20,3 +25,4 @@
         </section>
     </div>
 <?php include('footer.php'); ?>
+

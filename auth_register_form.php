@@ -1,5 +1,3 @@
-
-
 <?php include('header.php'); ?>
 <?php session_start(); ?>
 
@@ -31,7 +29,7 @@
                             <input type="submit" name="submit" value="Register">
                         </p>
                         <h2>';
-                            if ($_SESSION['message2'] != NULL){
+                            if (isset($_SESSION['message2'])){
                                 echo $_SESSION['message2'];
                             }    
                         echo '</h2>';
@@ -58,11 +56,11 @@
 
                     $_SESSION['message2'] = "";
                         
-                    if ($_SESSION['message1'] != NULL){
+                    if (isset($_SESSION['message1'])){
                         echo $_SESSION['message1'];
                     }
 
-                    if ($_SESSION['message3'] != NULL){
+                    if (isset($_SESSION['message3'])){
                         echo $_SESSION['message3'];
                     }
                     echo '</h2>';
