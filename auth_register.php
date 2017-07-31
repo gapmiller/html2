@@ -55,6 +55,11 @@
                     Contact the database administrator to confirm your registration.";
             }else{
                 $_SESSION['message1'] = $data[0]['fldusername'] . " is logged in.";
+
+    //This will need to be redone when the code for user permissions is created
+    //For now the only user that can do administrative functions is gretchnm
+                $_SESSION['user'] = $data[0]['fldusername'];
+
             }
             header("Location: index.php");
 
