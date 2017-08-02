@@ -1,5 +1,13 @@
-<?php include('header.php'); ?>
-<?php session_start(); ?>
+<?php 
+include('header.php'); 
+session_start(); 
+
+//This will need to be redone when the code for user permissions is created
+//For now the only user that can do administrative functions is gretchnm
+if ($_SESSION['user']!=="gretchnm") {
+    header("Location: index.php");
+} 
+?>
 <!-- This needs a lot of work. Only authorized users should be able to get to this form. -->
         <section id="hero">
             <div class='container'>

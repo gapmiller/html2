@@ -29,7 +29,8 @@
         $action = $_POST['submit'];
 
         // SQL to create the prepared statements
-        $userQryResult = pg_prepare($db, "pst_user", 'SELECT * FROM tblUsers WHERE fldusername = $1');   
+        $userQryResult = pg_prepare($db, "pst_user", 'SELECT * FROM tblUsers WHERE fldusername = $1');
+        $updateUserQryUpdate = pg_prepare($db, "pst_update", 'UPDATE tblUsers SET fldpassword = $1 where fldusername = $2');
 
         $username=$_POST['username'];
         $password=$_POST['password'];
@@ -39,20 +40,20 @@
         if ($password != $password2){
             $_SESSION['message2'] = "Passwords do not match. Please try again.";
             header("Location: auth_reset_form.php");
-        // change password
         }else{
-            //Everything seems good, lets change the password.
-            $hpassword = password_hash($password, PASSWORD_DEFAULT);
-            $_SESSION['message2'] = "Success! Password changed.";
+        //Everything seems good, lets change the password if the user exists.
+            $userQryResult = pg_execute($db, "pst_user", array($username));
+            $checkuser = pg_fetch_all($userQryResult);
+            $username_exist = sizeof($checkuser[0]['fldusername']);
+            if ($username_exist) {
+                $hpassword = password_hash($password, PASSWORD_DEFAULT);
+                $updateUserQryUpdate = pg_execute($db, "pst_update", array($hpassword, $username));
+                $_SESSION['message2'] = "Success! Password changed.";
+                header("Location: auth_reset_form.php");
+            }else{
+            $_SESSION['message2'] = "User does not exist.";
             header("Location: auth_reset_form.php");
             }
-         
-    /**********************************
-    *   All else
-    **********************************/
-    }else{
-        $_SESSION['message1'] = "Not authorized to reset password.";
-        $_SESSION['message2'] = NULL;
-        header("Location: index.php");
+        }
     }
 ?>
