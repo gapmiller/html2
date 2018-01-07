@@ -21,7 +21,8 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
         <?php 
         	include 'config.php';
           
-          // This is safe, since $_POST is converted automatically
+          // This is safe, since $_POST is converted automatically <- not sure this is true. Subject
+          // to injection attacks?
           $recSites = pg_query($db, 'SELECT * FROM tblsites ORDER BY fldsitename ASC');
           $arraySites = pg_fetch_all($recSites);
             
@@ -34,6 +35,7 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
             } else {
                 echo "<p>There is a problem retrieving the site information.</p>";
             }
+          //pg_free_result($arraySites);
           pg_close($db);
         ?>
       </section>

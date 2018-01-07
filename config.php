@@ -3,10 +3,10 @@
 // I left these like this because I don't know if I will need them in other places
 // should be changed to more standard variable names if only needed here. Also 
 // affects the postg_connection function below. - Gretchen 2015-10-24
-define (PGHOST, "localhost");
-define (PGDATABASE, "controlsdb");
-define (PGUSER, "btg_admin");
-define (PGPASSWORD, "m9894gapm");
+define ("PGHOST", "localhost");
+define ("PGDATABASE", "controlsdb");
+define ("PGUSER", "btg_admin");
+define ("PGPASSWORD", "m9894gapm");
 
 function postg_connect()
 {  

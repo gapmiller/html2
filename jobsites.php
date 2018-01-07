@@ -21,16 +21,28 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
 
         <?php 
 	       include 'config.php';
-          $recSites = pg_query($db, 'SELECT * FROM tblsites ORDER BY fldsitename ASC');
+          $recSites = pg_query($db, 
+            'SELECT tblsites.*, 
+                tblcities.fldcity, tblcities.fldstate, 
+                tblsitetypes.fldbmsmanufacturer, tblsitetypes.fldsitetype, 
+                tblpeople.fldfirstname, tblpeople.fldlastname 
+                FROM tblsites 
+              LEFT JOIN tblcities ON tblsites.fldlocation = tblcities.id 
+              LEFT JOIN tblsitetypes ON tblsites.fldsitetype = tblsitetypes.id
+              LEFT JOIN tblfunction ON tblsites.fldacctmngrid = tblfunction.id
+              LEFT JOIN tblpeople ON tblfunction.fldperson = tblpeople.id
+              ORDER BY fldsitename ASC');
           $arraySites = pg_fetch_all($recSites);
-          echo $arraySites["fldsitename"];
             
+          // the only field that is guaranteed to have data is fldsitename. All others can be NULL.
           $key = "id";
             if ($recSites) {
               foreach ($arraySites as $key => $site) {
-                //print_r($site["fldsitename"]);
+                // site name with link
                 echo'<a href= "jobnumbers.php?num=' . $site["id"].'">'. $site["fldsitename"] . '</a>';
                 echo "<br/>";
+
+                // up to two lines of address if known
                 if (!is_null($site["fldsiteaddress1"])){
                   print_r($site["fldsiteaddress1"]);
                   echo "<br/>";
@@ -39,38 +51,41 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
                   print_r($site["fldsiteaddress2"]);
                   echo "<br/>";
                 }
+                
+                // city and state if known
                 if (!is_null($site["fldlocation"])){
-                  $qry = 'SELECT fldcity, fldstate, fldcountry FROM tblcities WHERE id = '.$site["fldlocation"];
-                  $recCity = pg_query($db, $qry);
-                  $arrayCity = pg_fetch_assoc($recCity);
-                  print_r($arrayCity["fldcity"] . ", " . $arrayCity["fldstate"] . " ");
+                  print_r($site["fldcity"] . ", " . $site["fldstate"] . " ");
                 }
+                
+                // zip code
+                // if it's NULL, nothing prints and that doesn't cause problems so no check for NULL required
                 print_r($site["fldzipcode"]);
-
+                // don't print a line feed if nothing printed for zip code
                 if (!is_null($site["fldlocation"]) || !is_null($site["fldzipcode"])){
                 	echo "<br/>";
                 }
+
+                // phone number if known
                 if (!is_null($site["fldphone"])){
                   print_r($site["fldphone"]);
                   echo "<br/>";
                 }
 
+                // site type and software info if known
                 if (!is_null($site["fldsitetype"])){
                   if ($site["fldsitetype"] == "0"){
                     echo "Unknown site type.";
                   } else {
-                    $qry = 'SELECT fldsitetype, fldbmsmanufacturer FROM tblsitetypes WHERE id = '. $site["fldsitetype"];
-                    $recType = pg_query($db, $qry);
-                    $arrayType = pg_fetch_assoc($recType);
-                    print_r($arrayType["fldbmsmanufacturer"]);
+                    print_r($site["fldbmsmanufacturer"]);
                     echo " ";
-                    print_r($arrayType["fldsitetype"]);
+                    print_r($site["fldsitetype"]);
                     if (!is_null($site["fldsoftwarever"])){
                       print_r(", version " . $site["fldsoftwarever"]);
                     }            
                   }
                   echo "<br/>";
                 }
+
                 /*
                 This field isn't currently being used.
                 if (!is_null($site["fldglobalcontroller"])){
@@ -82,12 +97,15 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
                   echo "<br/>";
                 }
                 */
+
+                // notes if any
                 if (!is_null($site["fldnotes"])){
                   echo "Notes: ";
                   print_r($site["fldnotes"]);
                   echo "<br/>";
                 }
 
+                // flag if owner dials into site 
                 if (!is_null($site["fldownerdialin"])){
                   echo "Owner dials into site? ";
                   if($site["fldownerdialin"] === "t") {
@@ -97,25 +115,20 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
                   }
                   echo "<br/>";
                 }
-                  
+
+                // account manager
                 if (!is_null($site["fldacctmngrid"])){
-                  $qryRole = 'SELECT fldperson FROM tblfunction WHERE id = '. $site["fldacctmngrid"];
-                  $recPerson = pg_query($db, $qryRole);
-                  $numPerson = pg_fetch_result($recPerson, 0, 0);
-                  $qryName = 'SELECT fldfirstname, fldlastname FROM tblpeople WHERE id = '. intval($numPerson);
-                  $recAcctMangr = pg_query($db, $qryName);
-                  $arrayAcctMangr = pg_fetch_assoc($recAcctMangr);
-                  echo nl2br("Account Manager: " . $arrayAcctMangr["fldfirstname"] . " " . $arrayAcctMangr["fldlastname"] . "\n");
-                  //print_r($arrayAcctMangr["fldfirstname"] . " " . $arrayAcctMangr["fldlastname"]);
-                  //echo "<br/>";
+                  echo nl2br("Account Manager: " . $site["fldfirstname"] . " " . $site["fldlastname"] . "\n");
                 }
 
+                // remote connection info if known
                 if (!is_null($site["fldremote"])){
                   echo "Remote Connection: ";
                   print_r($site["fldremote"]);
                   echo "<br/>";
                 }
 
+                // location of backup files if known
                 if (!is_null($site["fldbackup"])){
                   $qry = 'SELECT fldfolder FROM tblbackup WHERE id = '. $site["fldbackup"];
                   $recBackup = pg_query($db, $qry);
@@ -126,13 +139,18 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
 
               	echo "<br/>";
 
-              }
-                unset($site);
-            } else {
-                echo "There is a problem retrieving the site information.\n";
-            }
+              } // closes foreach ($arraySites as $key => $site)
 
-          pg_close($db);
+              // cleanup when done with this record
+              //pg_free_result($recSites);
+              unset($site);
+            } else {
+                // error message if something goes wrong selecting site data
+                echo "There is a problem retrieving the site information.\n";
+            } // closes "if ($recSites)"
+
+          // cleanup when done
+            pg_close($db);
 
         ?>
       </section>

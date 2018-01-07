@@ -16,21 +16,24 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
       <section>
     <?php
     echo "<div class='siteinfo'>";
-//should use JOIN to get names?
+
+// functions
+
+    // combines first and last name from database if there is one
     function Getname ($personid, $db) {
-      //include 'config.php'; 
-      $recPeople = pg_query($db, 'SELECT fldfirstname, fldlastname FROM tblpeople WHERE id = ' . $personid);
-      $arrayPeople = pg_fetch_assoc($recPeople);
-      if ($arrayPeople){
-        $fullname = " " . $arrayPeople['fldfirstname'] . " ". $arrayPeople["fldlastname"];  
-      }else{
-        $fullname = " no data";
+      $fullname = " no data";
+      if ($personid !==NULL) { 
+        $recPeople = pg_query($db, 'SELECT fldfirstname, fldlastname FROM tblpeople WHERE id = ' . $personid);
+        $arrayPeople = pg_fetch_assoc($recPeople);
+        if ($arrayPeople){
+          $fullname = " " . $arrayPeople['fldfirstname'] . " ". $arrayPeople["fldlastname"];  
+        }
       }
       return $fullname;
-    }
+    } // end of function Getname
 
 // beginning of content
-      $sitenum = filter_input(INPUT_GET, 'num', FILTER_VALIDATE_INT);
+      $sitenum = filter_input(INPUT_GET, 'num', FILTER_VALIDATE_INT); // sufficiently protected against SQL injection?
       
       if($sitenum==NULL){
         echo "That is not a valid site request.";
@@ -38,9 +41,12 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
         //connect to database
         include 'config.php';
 
+        // spacer linefeed
         echo "<p>";
+
         // query for site info
-        $recSites = pg_query($db, 'SELECT * FROM tblsites WHERE id =' . $sitenum);
+        // need to changes query to a JOIN query and clean up the rest
+        $recSites = pg_query($db, 'SELECT * FROM tblsites WHERE id =' . $sitenum); 
         $arraySites = pg_fetch_assoc($recSites);
         echo nl2br('<p class="title">'. $arraySites["fldsitename"] . '</p>' . "\n");
 
@@ -188,7 +194,7 @@ if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
       }
       
       echo "</table>";
-    pg_close($db);
+      pg_close($db);
         ?>
       </section>
     </div>
