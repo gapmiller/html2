@@ -1,11 +1,19 @@
-<?php include('header.php'); ?>
-<?php session_start(); ?>
+<?php 
+    include('header.php'); 
+    //session_start(); 
+?>
 
         <section id="hero">
             <div class='container'>
                 <?php
 
-                $authreg=$_GET['authreg'];
+                if (isset($_GET['authreg'])){
+                    $authreg=$_GET['authreg'];
+                }else{
+                    $authreg='logout';
+                }
+
+                //$authreg=$_GET['authreg'];
                 if ($authreg === 'register'){
                     echo '<form class="reg-form" action="auth_register.php" method="POST">
                         <h1>Register</h1>

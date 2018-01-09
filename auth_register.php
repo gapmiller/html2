@@ -20,7 +20,8 @@
     // information about preventing SQL injection and using prepared queries
     // https://www.linkedin.com/pulse/protecting-your-postgresql-database-from-sql-attack-rogers-iii
 
-    session_start();
+    //session_start();
+    include 'header.php';
     include 'config.php';
 
     $action = $_POST['submit'];

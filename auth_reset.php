@@ -20,7 +20,7 @@
     // information about preventing SQL injection and using prepared queries
     // https://www.linkedin.com/pulse/protecting-your-postgresql-database-from-sql-attack-rogers-iii
 
-    session_start();
+    //session_start();
     include 'config.php';
 
     //This will need to be redone when the code for user permissions is created

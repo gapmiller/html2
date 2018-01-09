@@ -3,12 +3,18 @@
 </section> 
 </header>
 <?php
-if (($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
-  header("Location: index.php");
-  if ($_SESSION['message1'] != NULL){
-      echo $_SESSION['message1'];
+// if no session is set, go straight back to index
+if (isset($_SESSION['loggedin'])){
+  // if the user isn't allowed to see data, go back to the index
+  if(($_SESSION['loggedin'] != 1) || ($_SESSION['active'] == "f")){
+    header("Location: index.php");
+    if (isset($_SESSION['message1'])){
+        echo $_SESSION['message1'];
+    }
+    exit; 
   }
-  exit; 
+}else{
+  header("Location: index.php");
 }
 ?>
 
