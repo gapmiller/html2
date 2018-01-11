@@ -57,7 +57,7 @@ session_start();
             <!-- search box -->
             <form class="navbar-form navbar-left" action="search.php" method="POST">
               <div class="form-group">
-                <input type="text" name="searchstring" class="form-control"  placeholder="Search - does not work yet.">
+                <input type="text" name="searchstring" class="form-control"  placeholder="Type here to search sites.">
               </div>
               <button type="submit" class="btn btn-default">Submit</button>
             </form>

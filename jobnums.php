@@ -26,16 +26,26 @@ if (isset($_SESSION['loggedin'])){
           include 'config.php';
           echo "<p class='title'>Job Number List</p>";
           echo "<table id='jobs'>";
-          echo "<tr><th>Job Number</th> <th>Job Name </th></tr>";
+          echo "<tr><th>Job Number</th> <th>Job Name </th> <th>Job Site </th></tr>";
 
           $recJobs = pg_query($db, 'SELECT * FROM tbljobnumbers ORDER BY fldjobnumber ASC');
           $arrayJobnums = pg_fetch_all($recJobs);
+
+          $recJobs = pg_query($db, 
+            'SELECT tbljobnumbers.*, 
+                tblsites.fldsitename
+                FROM tbljobnumbers 
+              LEFT JOIN tblsites ON tbljobnumbers.fldsiteid = tblsites.id 
+              ORDER BY fldjobnumber ASC');
+          $arrayJobnums = pg_fetch_all($recJobs);
+
           $key = "id";
             if ($recJobs) {
               foreach ($arrayJobnums as $key => $jobnum) {
                 echo "<tr>";
                 echo "<td>". $jobnum["fldjobnumber"] . "</td>";
                 echo "<td>". $jobnum["fldjobname"] . "</td>";
+                echo'<td><a href= "jobnumbers.php?num=' . $jobnum["fldsiteid"].'">'. $jobnum["fldsitename"] . '</a></td>';
                 echo "</tr>";
               }
                 unset($jobnum);

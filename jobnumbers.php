@@ -47,99 +47,114 @@ if (isset($_SESSION['loggedin'])){
         //connect to database
         include 'config.php';
 
-        // spacer linefeed
-        echo "<p>";
-
         // query for site info
-        // need to changes query to a JOIN query and clean up the rest
-        $recSites = pg_query($db, 'SELECT * FROM tblsites WHERE id =' . $sitenum); 
-        $arraySites = pg_fetch_assoc($recSites);
-        echo nl2br('<p class="title">'. $arraySites["fldsitename"] . '</p>' . "\n");
+        $qry = 'SELECT tblsites.*, 
+                  tblcities.fldcity, tblcities.fldstate, 
+                  tblsitetypes.fldbmsmanufacturer, tblsitetypes.fldsitetype, 
+                  tblpeople.fldfirstname, tblpeople.fldlastname, 
+                  tblbackup.fldfolder, tblbackup.fldbaknotes
+                FROM tblsites 
+                LEFT JOIN tblcities ON tblsites.fldlocation = tblcities.id 
+                LEFT JOIN tblsitetypes ON tblsites.fldsitetype = tblsitetypes.id
+                LEFT JOIN tblfunction ON tblsites.fldacctmngrid = tblfunction.id
+                LEFT JOIN tblpeople ON tblfunction.fldperson = tblpeople.id
+                LEFT JOIN tblbackup ON tblsites.fldbackup = tblbackup.id
+                WHERE tblsites.id = ' . $sitenum;
 
+                $recSites = pg_query($db, $qry);
+                
+        // site title
+        $site = pg_fetch_assoc($recSites);
+        echo nl2br('<p class="title">'. $site["fldsitename"] . '</p>' . "\n");
+
+        // Should this be turned into a function? Also used in jobsites.php
+        // beginning of site info
         echo "<p>";
-        if (!is_null($arraySites["fldsiteaddress1"])){
-          echo nl2br($arraySites["fldsiteaddress1"] . "\n");
-        }
 
-        if (!is_null($arraySites["fldsiteaddress2"])){
-          echo nl2br($arraySites["fldsiteaddress2"] . "\n");
-        }
-         
-        if (!is_null($arraySites["fldlocation"])){
-          $qry = 'SELECT fldcity, fldstate, fldcountry FROM tblcities WHERE id = '.$arraySites["fldlocation"];
-          $recCity = pg_query($db, $qry);
-          $arrayCity = pg_fetch_assoc($recCity);
-          echo nl2br($arrayCity["fldcity"] . ", " . $arrayCity["fldstate"] . " ");
-        }
-        print_r($arraySites["fldzipcode"]);
+                // up to two lines of address if known
+                if (!is_null($site["fldsiteaddress1"])){
+                  echo nl2br($site["fldsiteaddress1"] . "\n");
+                }
+                if (!is_null($site["fldsiteaddress2"])){
+                  echo nl2br($site["fldsiteaddress2"] . "\n");
+                }
+                
+                // city and state if known
+                if (!is_null($site["fldlocation"])){
+                  echo nl2br($site["fldcity"] . ", " . $site["fldstate"] . " ");
+                }
+                
+                // zip code
+                // if it's NULL, nothing prints and that doesn't cause problems so no check for NULL required
+                echo nl2br($site["fldzipcode"]);
+                // don't print a line feed if nothing printed for zip code
+                if (!is_null($site["fldlocation"]) || !is_null($site["fldzipcode"])){
+                  echo "<br/>";
+                }
 
-        if (!is_null($arraySites["fldlocation"]) || !is_null($arraySites["fldzipcode"])){
-          echo "<br/>";
-        }
+                // phone number if known
+                if (!is_null($site["fldphone"])){
+                  echo nl2br($site["fldphone"]  . "\n");
+                }
 
-        if (!is_null($arraySites["fldphone"])){
-          echo nl2br($arraySites["fldphone"] . "\n");
-        }
-        
-        if (!is_null($arraySites["fldsitetype"])){
-          if ($arraySites["fldsitetype"] == "0"){
-            echo "Unknown site type.";
-          } else {
-            $qry = 'SELECT fldsitetype, fldbmsmanufacturer FROM tblsitetypes WHERE id = '. $arraySites["fldsitetype"];
-            $recType = pg_query($db, $qry);
-            $arrayType = pg_fetch_assoc($recType);
-            echo nl2br($arrayType["fldbmsmanufacturer"] . " " . $arrayType["fldsitetype"]);
-            if (!is_null($arraySites["fldsoftwarever"])){
-              echo ", version ";
-              print_r($arraySites["fldsoftwarever"]);
-            }
-          }
-          echo "<br/>";
-        }
+                // site type and software info if known
+                if (!is_null($site["fldsitetype"])){
+                  if ($site["fldsitetype"] == "0"){
+                    echo "Unknown site type.";
+                  } else {
+                    echo nl2br($site["fldbmsmanufacturer"] . " " . $site["fldsitetype"]);
+                    if (!is_null($site["fldsoftwarever"])){
+                      echo nl2br(", version " . $site["fldsoftwarever"]);
+                    }            
+                  }
+                  echo "<br/>";
+                }
 
-        if (!is_null($arraySites["fldnotes"])){
-          echo "Notes: ";
-          print_r($arraySites["fldnotes"]);
-          echo "<br/>";
-        }
+                /*
+                This field isn't currently being used.
+                if (!is_null($site["fldglobalcontroller"])){
+                  echo nl2br($site["fldbmsmanufacturer"]);
+                  echo nl2br($site["fldglobalcontroller"]);
+                  echo "<br/>";
+                }
+                */
 
-        if (!is_null($arraySites["fldownerdialin"])){
-          echo "Owner dials into site? ";
-          if($arraySites["fldownerdialin"] === "t") {
-            echo "Yes";
-          }else{
-            echo "No";
-          }
-          echo "<br/>";
-        }
-          
-        if (!is_null($arraySites["fldacctmngrid"])){
-          $qryRole = 'SELECT fldperson FROM tblfunction WHERE id = '. $arraySites["fldacctmngrid"];
-          $recPerson = pg_query($db, $qryRole);
-          $numPerson = pg_fetch_result($recPerson, 0, 0);
-          $qryName = 'SELECT fldfirstname, fldlastname FROM tblpeople WHERE id = '. intval($numPerson);
-          $recAcctMangr = pg_query($db, $qryName);
-          $arrayAcctMangr = pg_fetch_assoc($recAcctMangr);
-          echo "Account Manager: ";
-          print_r($arrayAcctMangr["fldfirstname"]);
-          echo " ";
-          print_r($arrayAcctMangr["fldlastname"]);
-          echo "<br/>";
-        }
+                // notes if any
+                if (!is_null($site["fldnotes"])){
+                  echo nl2br("Notes: " . $site["fldnotes"]  . "\n");
+                }
 
-        if (!is_null($arraySites["fldremote"])){
-          echo "Remote Connection: ";
-          print_r($arraySites["fldremote"]);
-          echo "<br/>";
-        }
+                // flag if owner dials into site 
+                if (!is_null($site["fldownerdialin"])){
+                  echo "Owner dials into site? ";
+                  if($site["fldownerdialin"] === "t") {
+                    echo nl2br("Yes\n");
+                  }else{
+                    echo nl2br("No\n");
+                  }
+                }
 
-        if (!is_null($arraySites["fldbackup"])){
-          $qry = 'SELECT fldfolder FROM tblbackup WHERE id = '. $arraySites["fldbackup"];
-          $recBackup = pg_query($db, $qry);
-          $arrayBackup = pg_fetch_assoc($recBackup);
-          echo "Location of backup: ";
-          echo nl2br($arrayBackup["fldfolder"] . "\n");
-        }
+                // account manager
+                if (!is_null($site["fldacctmngrid"])){
+                  echo nl2br("Account Manager: " . $site["fldfirstname"] . " " . $site["fldlastname"] . "\n");
+                }
+
+                // remote connection info if known
+                if (!is_null($site["fldremote"])){
+                  echo nl2br("Remote Connection: " . $site["fldremote"] . "\n");
+                }
+
+                // location of backup files if known
+                if (!is_null($site["fldbackup"])){
+                  if (!is_null($site["fldfolder"])){
+                    echo nl2br("Location of backup: " . $site["fldfolder"] . "\n");
+                  }
+                  if (!is_null($site["fldbaknotes"])){
+                    echo nl2br("Backup notes: " . $site["fldbaknotes"] . "\n");
+                  }
+                }
+
+                echo "<br/>";
 
         echo "</p>";
         echo "</div>";
