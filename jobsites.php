@@ -41,10 +41,6 @@ if (isset($_SESSION['loggedin'])){
               LEFT JOIN tblbackup ON tblsites.fldbackup = tblbackup.id
               ORDER BY fldsitename ASC');
           $arraySites = pg_fetch_all($recSites);
-
-          
-    $url = htmlspecialchars($_SERVER['HTTP_REFERER']);
-    echo "<a href='$url'>back</a>";
             
           // the only field that is guaranteed to have data is fldsitename. All others can be NULL.
           $key = "id";

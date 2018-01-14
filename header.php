@@ -45,6 +45,7 @@ session_start();
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li><a href="oldnames.php">Alternate Site Names</a></li>
+              <li><a href="jobnums.php">Job Numbers</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Site List <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -57,7 +58,7 @@ session_start();
             <!-- search box -->
             <form class="navbar-form navbar-left" action="search.php" method="POST">
               <div class="form-group">
-                <input type="text" name="searchstring" class="form-control"  placeholder="Type here to search sites.">
+                <input type="text" name="searchstring" class="form-control"  placeholder="Type here to search.">
               </div>
               <button type="submit" class="btn btn-default">Submit</button>
             </form>

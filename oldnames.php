@@ -28,26 +28,29 @@ if (isset($_SESSION['loggedin'])){
           echo "<table id='oldnames'>";
           echo "<tr><th>Alternate or Previous Name</th> <th>Current Site Name </th></tr>";
 
-          // query for old name info
-          $recOldNames = pg_query($db, 'SELECT * FROM tbloldnames *ORDER BY fldoldname ASC');
+          // query for list of old names and current name
+          $recOldNames = pg_query($db, 
+            'SELECT tbloldnames.*, 
+                tblsites.fldsitename
+                FROM tbloldnames 
+              LEFT JOIN tblsites ON tbloldnames.fldcurrentname = tblsites.id 
+              ORDER BY fldoldname ASC');
           $arrayOldNames = pg_fetch_all($recOldNames);
-          $key = "id";
 
           //fill out table
+          $key = "id";
           foreach ($arrayOldNames as $key => $oldname) {
-            $sitenum = $oldname["fldcurrentname"];
-            $recSites = pg_query($db, 'SELECT fldsitename FROM tblsites WHERE id =' . $sitenum);
-            $arraySites = pg_fetch_assoc($recSites);
-            $sitename = $arraySites["fldsitename"];
-            //echo nl2br($oldname["fldoldname"] . " - " .  
-            // '<a href= "jobnumbers.php?num=' . $sitenum .'">'. $sitename . '</a>' . "\n");
-
+            $sitename = $oldname["fldsitename"];
             echo '<tr><td>'. $oldname["fldoldname"] . '</td>' . 
-              '<td><a href= "jobnumbers.php?num=' . $sitenum .'">'. $sitename . '</a></td></tr>';
+              '<td><a href= "jobnumbers.php?num=' . $oldname["fldcurrentname"] .'">'. $sitename . '</a></td></tr>';
           }
           echo "</table>";
+
+          pg_close($db);
+
         ?>
       </section>
     </div>
 
   <?php include('footer.php'); ?>
+  

@@ -174,11 +174,8 @@ if (isset($_SESSION['loggedin'])){
         if ($recJobs) {
           //check if it has any job information
           foreach ($arrayJobs as $key => $job) {
+            // if job information exists, print it for each job on site
             echo "<tr>";
-            $salesman = Getname ($job["fldsalesman"], $db);
-            $projectmanager = Getname ($job["fldprojectmanager"], $db);
-            $engineer = Getname ($job["fldengineer"], $db);
-            $leadinstaller = Getname ($job["fldleadinstaller"], $db);
             echo "<td>" . $job["fldjobnumber"] . "</td>";
 
             if ($job["fldjobname"]!= ""){
@@ -199,13 +196,18 @@ if (isset($_SESSION['loggedin'])){
               echo "<td>" . "no data" . "</td>";
             }
 
+            $salesman = Getname ($job["fldsalesman"], $db);
+            $projectmanager = Getname ($job["fldprojectmanager"], $db);
+            $engineer = Getname ($job["fldengineer"], $db);
+            $leadinstaller = Getname ($job["fldleadinstaller"], $db);
+            
             echo "<td>" . $salesman . "</td>";
             echo "<td>" . $projectmanager . "</td>";
             echo "<td>" . $engineer . "</td>";
             echo "<td>" . $leadinstaller . "</td>";
             echo "</tr>";
         }
-          // if job information exists, print it for each job on site
+          
           unset($recJobs);
 
         }else{

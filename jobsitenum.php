@@ -35,7 +35,7 @@ if (isset($_SESSION['loggedin'])){
           $key = "id";
             if ($recSites) {
               foreach ($arraySites as $key => $site) {
-                echo'<p><h1><a href= "jobnumbers.php?num=' . $site["id"].'">'. $site["fldsitename"] . '</a></h1></p>';
+                echo'<p><a href= "jobnumbers.php?num=' . $site["id"].'">'. $site["fldsitename"] . '</a></p>';
               }
                 unset($site);
             } else {
